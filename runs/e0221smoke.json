@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0221smoke",
+  "parent_id": "e0220",
+  "date": "2026-08-22T13:00:53",
+  "approach": "gbdt_direct",
+  "change": "HL-Gauss cross-entropy over 12 binned log1p targets, readout E[L]=sum p_k c_k",
+  "tier": "screen",
+  "n_features": 665,
+  "cv_mean": 1.80378,
+  "cv_std": 0.00201,
+  "folds": "[1.80177, 1.80579]",
+  "delta": -0.10586,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 40.4,
+  "seed": 0,
+  "config": "configs/e0221smoke.yaml",
+  "verdict": "",
+  "gini_pred": 0.697,
+  "total_rel_err": -0.58,
+  "notes": "IDEAS.md E-IDEA-01. Port gate (custom objective == LightGBM multiclass, max|d raw|=0) runs inside the job and aborts on failure.",
+  "best_iters": "[60, 60]"
+}

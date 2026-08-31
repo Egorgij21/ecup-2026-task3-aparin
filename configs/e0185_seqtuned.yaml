@@ -1,0 +1,23 @@
+# e0185 -- frozen-fold arch search, fold-4 rank 6 of 31 (fold4 1.73228).
+#
+# STAGE 2 OF A TWO-TIER DESIGN (CLAUDE.md 4.2), added after the first attempt selected on ONE
+# fold and did not generalise: e0180/81/82 all beat e0101 on fold 4 and all three were worse on
+# folds 0-2, because 31 trials against a single fold had room to fit that fold's noise.
+# The screen (fold 4) proposes; the 5-fold confirm disposes. Selection happens on the CONFIRM.
+exp_id: e0185
+parent_id: e0101
+approach: nn_seq
+change: "arch-search rank 6: gru d32 L4 dropout 0.37 lr 1.46e-03 wd 3.29e-04 batch 256 12 epochs"
+tier: confirm
+seed: 0
+arch: gru
+d_model: 32
+n_blocks: 4
+dropout: 0.3704
+dow: false
+epochs: 12
+batch_users: 256
+lr: 1.455131e-03
+weight_decay: 3.294016e-04
+
+notes: "stage-2 confirm; screened on fold 4 only, selection deferred to the 5-fold mean"

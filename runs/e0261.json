@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0261",
+  "parent_id": "e0049",
+  "date": "2026-08-22T22:39:55",
+  "approach": "gbdt_direct",
+  "change": "sample weight = 0.5^(anchor_age/60d) -- recency decay over training anchors",
+  "tier": "confirm",
+  "n_features": 665,
+  "cv_mean": 1.76548,
+  "cv_std": 0.02151,
+  "folds": "[1.77329, 1.79415, 1.77692, 1.75028, 1.73278]",
+  "delta": -0.16314,
+  "significant": "no",
+  "lb": "",
+  "runtime_min": 467.8,
+  "seed": 0,
+  "config": "configs/e0260_regime.yaml",
+  "verdict": "kill",
+  "gini_pred": 0.7733,
+  "total_rel_err": -0.5884,
+  "notes": "anchor recency decay half-life 60d. d -0.00002, 2/5 folds, 0.3 sigma = no effect. With e0262 this closes BACKLOG Band B e0012/B3 (recency weighting of training anchors), open and never run until now.",
+  "best_iters": "[178, 178, 178, 178, 178]"
+}

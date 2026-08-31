@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0255",
+  "parent_id": "e0049",
+  "date": "2026-08-22T18:25:06",
+  "approach": "gbdt_magnitude",
+  "change": "buyers-only + lower capacity (leaves 63->31, min_data 200->800)",
+  "tier": "confirm",
+  "n_features": 665,
+  "cv_mean": 1.1156,
+  "cv_std": 0.00299,
+  "folds": "[1.11094, 1.11896, 1.11336, 1.11784, 1.1169]",
+  "delta": 0.05625,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 227.4,
+  "seed": 0,
+  "config": "configs/e0250_magnitude.yaml",
+  "verdict": "kill",
+  "gini_pred": 0.0,
+  "total_rel_err": 0.0,
+  "notes": "rho|Z=1 0.53800 vs same-session all-rows ref 0.48175 (d +0.05625, 5/5 folds); ceiling 0.6001; cv_mean col = RMSLE among BUYERS ONLY, not the competition metric. brackets e0254. If neither side of the bracket moves, capacity is flat here as it was on the full population, and the regime question is closed rather than untested. | MAGNITUDE ARM. rho|Z=1 beats the isotonic control by +0.028 (genuine information, NOT recalibration) but LOO RMSLE through the hurdle is WORSE than clf x e0049 by +0.00025..+0.00133. Pre-registered bar required BOTH; only 'info' achieved. This is IDEAS.md I13's conversion failure, measured: the magnitude term has real unclaimed signal and it does not reach the metric. See EXPERIMENTS.md 1r.",
+  "best_iters": "[178, 178, 178, 178, 178]"
+}

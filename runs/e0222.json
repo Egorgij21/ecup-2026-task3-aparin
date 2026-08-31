@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0222",
+  "parent_id": "e0220",
+  "date": "2026-08-22T15:59:36",
+  "approach": "gbdt_direct",
+  "change": "two-part hurdle P(buy) x E[log1p|buy] on the 665-feature set (e0010 used 62)",
+  "tier": "confirm",
+  "n_features": 665,
+  "cv_mean": 1.76886,
+  "cv_std": 0.0204,
+  "folds": "[1.77708, 1.79631, 1.77985, 1.75044, 1.74059]",
+  "delta": -0.15976,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 110.5,
+  "seed": 0,
+  "config": "configs/e0222_twopart_full.yaml",
+  "verdict": "",
+  "gini_pred": 0.7733,
+  "total_rel_err": -0.5936,
+  "notes": "IDEAS.md I13/I14. Retest of graveyard entry e0010 at 10x the feature count, motivated by a measured magnitude-term ceiling.",
+  "best_iters": "[[146, 123], [151, 142], [180, 136], [281, 232], [354, 276]]"
+}

@@ -1,0 +1,68 @@
+# e0320-e0327 (renumbered from e0281-e0288 on 2026-08-23 to resolve an id collision with a teammate seq run) -- SCALE-PENALTY GATE for the tabular-foundation-model direction (IDEAS.md §I17)
+# plus one transductive pseudo-labelling arm (§I18). No feature changes: every arm runs e0049's
+# exact 665 columns and varies only the ROWS / FEATURES the model is allowed to see, or adds
+# label-free pseudo rows. Scored with the real metric on the frozen folds against a
+# SAME-SESSION reference refitted in every fold (cross-session drift is +0.00027..+0.00046).
+#
+# The arms are the input regimes a TFM would actually get:
+#   TabPFN-2.5      50k rows  x 2,000 feats     -> e0281
+#   TabPFN-3        100k rows x 2,000 feats     -> e0282  (and e0286 with small-N-fair params)
+#   TabICLv2 / -3   1M rows   x 200-500 feats   -> e0284 (1M x top-200), e0283 (250k x 665)
+#   the feature cut alone                       -> e0285 (all rows x top-200)
+# A TFM starts from the arm's penalty and must recover it from inductive bias alone; §1f then
+# still demands rho_partial >= 0.04 against the champion for any blend value.
+parent_id: e0049
+tier: confirm
+seed: 0
+fixed_rounds: 178
+feature_cache: false
+
+feature_blocks: [base, counts, rank, visit, channel, dispersion, sbcnomoment]
+
+lgb_params:
+  objective: regression
+  metric: rmse
+  learning_rate: 0.05
+  num_leaves: 63
+  min_data_in_leaf: 200
+  feature_fraction: 0.8
+  bagging_fraction: 0.8
+  bagging_freq: 1
+  lambda_l2: 1.0
+  max_bin: 255
+  num_threads: 16
+  verbosity: -1
+
+arms:
+  - exp_id: e0900
+    rows: 50000
+    change: "GATE: train on a random 50k-row subsample of the fold's training matrix (TabPFN-2.5 context), 665 feats"
+    notes: "scale-penalty gate for IDEAS.md I7/I17; the TFM must recover this from inductive bias alone"
+  - exp_id: e0901
+    rows: 100000
+    change: "GATE: random 100k-row subsample (TabPFN-3 100k x 2000 regime), 665 feats"
+  - exp_id: e0902
+    rows: 250000
+    change: "GATE: random 250k-row subsample, 665 feats"
+  - exp_id: e0903
+    rows: 1000000
+    feats: 200
+    change: "GATE: random 1M rows x top-200 gain features of the in-fold reference (TabPFN-3 1M x 200 regime)"
+  - exp_id: e0904
+    feats: 200
+    change: "GATE: all rows x top-200 gain features of the in-fold reference -- isolates the feature cut"
+  - exp_id: e0905
+    rows: 100000
+    params:
+      min_data_in_leaf: 20
+    change: "GATE: random 100k rows, min_data_in_leaf 200 -> 20 (small-N-fair LightGBM config)"
+    notes: "brackets e0282: if the gap closes, the penalty was under-fitting, not information"
+  - exp_id: e0906
+    kind: pseudo
+    weight: 1.0
+    change: "PSEUDO-LABEL: add the validation-anchor rows with the reference model's own log prediction as label (weight 1.0), refit"
+    notes: "IDEAS.md I18, transductive self-training under the measured test-anchor covariate shift; label-free"
+  - exp_id: e0907
+    kind: pseudo
+    weight: 0.3
+    change: "PSEUDO-LABEL: same as e0287 at weight 0.3"

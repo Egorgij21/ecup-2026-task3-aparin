@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0903",
+  "parent_id": "e0049",
+  "date": "2026-08-22T22:08:23",
+  "approach": "gbdt_direct",
+  "change": "GATE: random 1M rows x top-200 gain features of the in-fold reference (TabPFN-3 1M x 200 regime)",
+  "tier": "confirm",
+  "n_features": 200,
+  "cv_mean": 1.76624,
+  "cv_std": 0.02152,
+  "folds": "[1.77344, 1.79522, 1.77789, 1.75075, 1.73386]",
+  "delta": -0.16238,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 144.2,
+  "seed": 0,
+  "config": "configs/e0900_gate.yaml",
+  "verdict": "",
+  "gini_pred": 0.7745,
+  "total_rel_err": -0.5964,
+  "notes": "vs SAME-SESSION refit reference 1.76551: d +0.00073, 1/5 folds, mean log-corr with reference 0.9983. ",
+  "best_iters": "[178, 178, 178, 178, 178]"
+}

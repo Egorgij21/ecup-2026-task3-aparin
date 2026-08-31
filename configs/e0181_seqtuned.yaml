@@ -1,0 +1,27 @@
+# e0181 -- 2nd (fold4 1.73151) from the frozen-fold architecture search (src/tune_seq.py, 31 trials).
+#
+# WHY THIS SEARCH IS TRUSTWORTHY WHERE THE EARLIER ONE WAS NOT. src/tune_usercv.py scored each
+# trial by the MINIMUM of an early-stopped validation curve; the curve is noise (per-evaluation
+# sd 0.0014-0.0027), so min-of-N is biased by ~sigma*sqrt(2 ln N) and configs that train longer
+# get more draws. Its winner improved that CV by -0.00099 and made LB rho WORSE by -0.00101.
+# run_seq.py trains a FIXED epoch count and scores once at the end, so no such selection exists,
+# and  competed as an ordinary hyperparameter over 8..200 -- the winners chose 8..15.
+#
+# Against the e0101 defaults this is NARROWER (d64 vs 128), DEEPER (3 vs 2 layers) and far more
+# REGULARISED (dropout 0.36 vs 0.10). Capacity was binding downward; I had only ever probed up.
+exp_id: e0181
+parent_id: e0101
+approach: nn_seq
+change: "frozen-fold arch search winner #2: gru d32 L3 dropout 0.38 lr 3.3e-03 wd 5.2e-04 batch 256 8 epochs"
+tier: confirm
+seed: 0
+arch: gru
+d_model: 32
+n_blocks: 3
+dropout: 0.38
+dow: false
+epochs: 8
+batch_users: 256
+lr: 3.3e-03
+weight_decay: 5.2e-04
+notes: "2nd (fold4 1.73151); top-3 kept as separate members so the blend can use their disagreement"

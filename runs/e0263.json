@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0263",
+  "parent_id": "e0049",
+  "date": "2026-08-22T22:39:56",
+  "approach": "gbdt_direct",
+  "change": "sample weight 2.0 on buyers (y>0), 1.0 on non-buyers",
+  "tier": "confirm",
+  "n_features": 665,
+  "cv_mean": 1.82591,
+  "cv_std": 0.0157,
+  "folds": "[1.83144, 1.84355, 1.83245, 1.82531, 1.79681]",
+  "delta": -0.10271,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 467.8,
+  "seed": 0,
+  "config": "configs/e0260_regime.yaml",
+  "verdict": "kill",
+  "gini_pred": 0.7137,
+  "total_rel_err": -0.5147,
+  "notes": "buyer sample weight 2.0. d +0.06040, 0/5 folds. Badly worse.",
+  "best_iters": "[178, 178, 178, 178, 178]"
+}

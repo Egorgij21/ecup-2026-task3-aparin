@@ -1,0 +1,17 @@
+# e0105 -- parent e0101, ONE change: d_model 128 -> 256.
+exp_id: e0105
+parent_id: e0101
+approach: nn_seq
+change: "GRU d_model 128 -> 256, everything else identical to e0101"
+tier: confirm
+seed: 0
+arch: gru
+d_model: 256
+n_blocks: 2
+dropout: 0.1
+dow: false
+epochs: 12
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+notes: "capacity lever on the winning backbone"

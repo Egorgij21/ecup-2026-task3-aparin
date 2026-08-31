@@ -1,0 +1,22 @@
+# e0103 -- parent e0100, ONE change: epochs 12 -> 30.
+# e0100's training loss was still falling monotonically at epoch 12 (1.87234 -> 1.77005, last
+# epoch still -0.00056) and the cosine schedule is tied to the epoch budget, so "train longer"
+# is a single, well-defined change. This is the cheapest test of whether e0100 was simply
+# undertrained -- which is the most boring explanation of its 0.0035 gap to e0049 and therefore
+# the one to rule out first.
+exp_id: e0103
+parent_id: e0100
+approach: nn_seq
+change: "epochs 12 -> 30 (cosine schedule rescaled), everything else identical to e0100"
+tier: confirm
+seed: 0
+arch: tcn
+d_model: 128
+n_blocks: 8
+dropout: 0.1
+dow: false
+epochs: 30
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+notes: "is e0100 undertrained? cheapest boring explanation of the gap, so test it first"

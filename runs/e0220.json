@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0220",
+  "parent_id": "e0049",
+  "date": "2026-08-22T14:26:58",
+  "approach": "gbdt_direct",
+  "change": "e0049 with early stopping instead of fixed_rounds=178 (control arm for e0221)",
+  "tier": "confirm",
+  "n_features": 665,
+  "cv_mean": 1.76924,
+  "cv_std": 0.01989,
+  "folds": "[1.77683, 1.79648, 1.77967, 1.75139, 1.74185]",
+  "delta": -0.15938,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 94.4,
+  "seed": 0,
+  "config": "configs/e0220_l2_es.yaml",
+  "verdict": "",
+  "gini_pred": 0.7691,
+  "total_rel_err": -0.596,
+  "notes": "control arm only; not a candidate. Pairs with e0221.",
+  "best_iters": "[127, 148, 216, 264, 144]"
+}

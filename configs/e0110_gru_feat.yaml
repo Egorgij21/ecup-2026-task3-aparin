@@ -1,0 +1,34 @@
+# e0110 -- parent e0101, ONE change: +27 derived channels (the tabular feature set's
+# top-ranked family, evaluated at every day).
+#
+# HYPOTHESIS. DATA.md §9.2 ranks multi-window aggregates first by measured evidence, and §7.1
+# says why: the 90-day sum (corr 0.589) beats the 30-day sum (0.557) and the lag-block
+# correlation is still 0.416 a year back. The GRU currently has to learn that integration
+# through its recurrence from 13 raw daily channels. Handing it explicit 7/30/90/365-day sums
+# of gmv/ord/cart/srch, active-day and buy-day counts, both recencies, and geo3 itself removes
+# the hardest part of its job. Every channel is a prefix-sum difference, so all 409 days cost
+# one subtraction and causality is structural.
+#
+# WHY NOT e0049's 665 COLUMNS DIRECTLY. They are defined only at the ~29 anchor dates, so
+# using them would collapse ~30M supervised user-days back to ~5M and throw away the seq
+# approach's structural advantage -- and materialising them at every day would cost 133 GB.
+# DELIBERATELY EXCLUDED: tenure, lifetime totals, anything indexed on absolute time.
+# seq_transfer.json measured this family as 6.6x more cut-off-robust than the GBDT precisely
+# because it has none of those; importing them trades away the one edge it has.
+exp_id: e0110
+parent_id: e0101
+approach: nn_seq
+change: "+27 derived channels (7/30/90/365d window sums, active/buy days, recencies, geo3) -- 13 -> 40 channels"
+tier: confirm
+seed: 0
+arch: gru
+d_model: 128
+n_blocks: 2
+dropout: 0.1
+dow: false
+derived_channels: true
+epochs: 12
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+notes: "the scalable form of 'tabular features for the GRU': keeps dense per-day supervision, no absolute-time features"

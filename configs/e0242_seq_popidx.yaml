@@ -1,0 +1,37 @@
+# e0242 -- parent e0101, ONE change: add the population regime index as a 14th channel.
+#
+# WHY. e0215/e0216 measured the 5-channel calendar block at +0.00049 rho on a forward-in-
+# calendar anchor -- the largest feature effect ever measured on a sequence path here. But
+# e0142 proves day-of-year costs -0.00262 rho at the YEAR boundary: doy maps 2026-02 onto
+# 2025-02's LEVEL, and the platform level went 0.1093 -> 0.1773 (+62%) between them.
+# pop_gmv_30 carries the same "what regime is this" signal with the year bug removed -- the
+# level is MEASURED at every day, so at the test anchor it reads 2026's value, not 2025's.
+#
+# A per-user recurrence structurally cannot compute a cross-sectional quantity, so this is
+# outside the hypothesis space at any depth (the same argument that motivated e0114's rank
+# channels -- which LOST, so the prior here is not good).
+#
+# WHY IT MATTERS ARITHMETICALLY. Measured pass-through: improving ONE component moves the
+# blend at 0.52x, improving ALL THREE moves it at 1.00x. A regime channel is the only
+# candidate that can go into all three families, so it is the one route whose arithmetic
+# reaches 1.6450 (+0.00070 rho per member).
+#
+# PRIOR AGAINST, stated plainly: four previous input additions to the seq family (dow +0.00051,
+# 27 derived +0.00137, 5 rank +0.00105, cnngru +0.00162) all LOST, every one 0/5 folds.
+exp_id: e0242
+parent_id: e0101
+approach: nn_seq
+change: "+1 broadcast channel: pop_gmv_30 = population trailing-30d mean log1p(gmv). ONE change vs e0101"
+tier: confirm
+seed: 0
+arch: gru
+d_model: 128
+n_blocks: 2          # = GRU layers; 8 would be absurd for a recurrent stack
+dropout: 0.1
+dow: false
+epochs: 12
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+notes: "diversity member; GRU is the literature default at this data scale (reports/papers_part3_sequence.md)"
+popidx_channel: true

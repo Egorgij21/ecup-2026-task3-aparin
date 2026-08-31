@@ -1,0 +1,38 @@
+# e0211 -- FEATURES.md Candidate A, confirmed on the frozen folds under XGBoost.
+#
+# One change vs e0210: the `agebucket` block (a single column, age_bucket_gmv_share_3).
+# The share of lifetime GMV falling in the user's OWN days [90,120) since first activity --
+# age-aligned rather than calendar-aligned, which is the confound the installed gmv_blk carry.
+#
+# FEATURES.md records that buckets 0-2 of this family were LEAKY in the first draft (their age
+# windows ran past the anchor into the target window); bucket 3 is the one that survives the
+# causal cap. The block clips both numerator and denominator at the anchor and
+# assert_no_lookahead re-checks it every run.
+exp_id: e0211
+parent_id: e0210
+approach: gbdt_direct
+change: "+age_bucket_gmv_share_3 (FEATURES.md candidate A), one feature"
+tier: confirm
+seed: 0
+fixed_rounds: 178
+
+feature_blocks: [base, counts, rank, visit, channel, dispersion, sbcnomoment, agebucket]
+max_train_anchors: null
+
+xgb_params:
+  objective: reg:squarederror
+  eval_metric: rmse
+  learning_rate: 0.05
+  grow_policy: lossguide
+  max_leaves: 63
+  max_depth: 0
+  min_child_weight: 200
+  subsample: 0.8
+  colsample_bytree: 0.8
+  lambda: 1.0
+  max_bin: 256
+  tree_method: hist
+  nthread: 16
+  verbosity: 0
+
+notes: "screen d_rho +0.00074 (A1) / +0.00112 (A2), the largest consistent positive of 19 candidates"

@@ -1,0 +1,36 @@
+# e0220 -- L2 CONTROL for the loss-geometry test (IDEAS.md §I1, §E1).
+#
+# Identical to e0049 except that early stopping replaces `fixed_rounds: 178`.  It exists ONLY
+# so that e0221 differs from a same-protocol baseline by exactly one thing -- the objective.
+# e0049's logged 1.76551 is NOT the right comparator for e0221: it trains on ~4 more anchors
+# per fold (no ES holdout), so a delta against it would confound the loss with the training
+# set (CLAUDE.md 4.1).
+exp_id: e0220
+parent_id: e0049
+approach: gbdt_direct
+change: "e0049 with early stopping instead of fixed_rounds=178 (control arm for e0221)"
+tier: confirm
+seed: 0
+es_gap_days: 30
+fixed_rounds: 0
+
+feature_blocks: [base, counts, rank, visit, channel, dispersion, sbcnomoment]
+max_train_anchors: null
+
+num_boost_round: 3000
+early_stopping_rounds: 100
+lgb_params:
+  objective: regression
+  metric: rmse
+  learning_rate: 0.05
+  num_leaves: 63
+  min_data_in_leaf: 200
+  feature_fraction: 0.8
+  bagging_fraction: 0.8
+  bagging_freq: 1
+  lambda_l2: 1.0
+  max_bin: 255
+  num_threads: 16
+  verbosity: -1
+
+notes: "control arm only; not a candidate. Pairs with e0221."

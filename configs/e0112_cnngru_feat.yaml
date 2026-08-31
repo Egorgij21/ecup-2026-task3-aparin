@@ -1,0 +1,23 @@
+# e0112 -- the COMBINATION of e0110 (+derived channels) and e0111 (cnngru).
+# CLAUDE.md §4.1: when several isolated wins are combined, the combination is itself an
+# experiment and must be re-validated -- deltas do not add up. Logged as such, and it is only
+# worth keeping if it beats BOTH parents, not just e0101.
+exp_id: e0112
+parent_id: e0101
+approach: nn_seq
+change: "cnngru backbone AND +27 derived channels (combination of e0110 and e0111, re-validated)"
+tier: confirm
+seed: 0
+arch: cnngru
+d_model: 128
+n_blocks: 2
+arch_kwargs:
+  n_conv: 4
+dropout: 0.1
+dow: false
+derived_channels: true
+epochs: 12
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+notes: "combination experiment; keep only if it beats both e0110 and e0111"

@@ -1,0 +1,21 @@
+# e0113 -- parent e0100 (the TCN), ONE change: +27 derived channels.
+# Separates "the derived channels carry information" from "the GRU specifically was bad at
+# long-window integration". If e0110 wins and e0113 does not, the channels are a GRU crutch;
+# if both win, they are genuinely new information to the whole family.
+exp_id: e0113
+parent_id: e0100
+approach: nn_seq
+change: "+27 derived channels on the TCN backbone (isolates whether the channels help the family or only the GRU)"
+tier: confirm
+seed: 0
+arch: tcn
+d_model: 128
+n_blocks: 8
+dropout: 0.1
+dow: false
+derived_channels: true
+epochs: 12
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+notes: "control for e0110"

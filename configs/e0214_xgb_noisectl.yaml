@@ -1,0 +1,37 @@
+# e0214 -- NOISE CONTROL. Not a hypothesis about the data.
+#
+# One change vs e0210: the `noisectl` block, a single i.i.d. standard-normal column seeded on
+# the anchor. It cannot carry information, so whatever |delta| it produces is this protocol's
+# resolution floor at 665 features. FEATURES.md's screen had exactly this control (+0.00014 /
+# -0.00097 d_rho at its two anchors) and it is the reason the screen could say "nothing clears
+# noise" rather than "two candidates look positive".
+#
+# Read e0211-e0213 against THIS, not against zero.
+exp_id: e0214
+parent_id: e0210
+approach: gbdt_direct
+change: "+one i.i.d. normal column -- NOISE CONTROL, not a candidate"
+tier: confirm
+seed: 0
+fixed_rounds: 178
+
+feature_blocks: [base, counts, rank, visit, channel, dispersion, sbcnomoment, noisectl]
+max_train_anchors: null
+
+xgb_params:
+  objective: reg:squarederror
+  eval_metric: rmse
+  learning_rate: 0.05
+  grow_policy: lossguide
+  max_leaves: 63
+  max_depth: 0
+  min_child_weight: 200
+  subsample: 0.8
+  colsample_bytree: 0.8
+  lambda: 1.0
+  max_bin: 256
+  tree_method: hist
+  nthread: 16
+  verbosity: 0
+
+notes: "definitionally worthless; measures what |delta| this protocol yields for a null feature, which is the only honest yardstick for reading e0211-e0213"

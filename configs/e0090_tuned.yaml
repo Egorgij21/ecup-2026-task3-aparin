@@ -1,0 +1,33 @@
+# e0001 -- first GBDT. Parent is the naive geo3 baseline (e0000), scored on the identical
+# folds inside the same run so the delta is an exact paired comparison.
+exp_id: e0090
+parent_id: e0049
+approach: gbdt_direct
+change: "Optuna-tuned LightGBM hyperparameters (84+84 trials, two-tier); first tuning in ~90 experiments"
+tier: confirm
+seed: 0
+es_gap_days: 30
+fixed_rounds: 587
+
+feature_blocks: [base, counts, rank, visit, channel, dispersion, sbcnomoment]
+max_train_anchors: null
+
+num_boost_round: 3000
+early_stopping_rounds: 100
+lgb_params:
+  objective: regression
+  metric: rmse
+  learning_rate: 0.01514153177761178
+  num_leaves: 133
+  min_data_in_leaf: 1614
+  feature_fraction: 0.3826978558681982
+  bagging_fraction: 0.8399895906355983
+  bagging_freq: 1
+  lambda_l1: 0.16365803808627277
+  lambda_l2: 0.0008739850769203147
+  min_gain_to_split: 0.004872282389628998
+  max_bin: 511
+  num_threads: 16
+  verbosity: -1
+
+notes: "trial68(screen 1.75269); confirm CV 1.76469, delta -0.00082 vs e0049, wins 5/5, last-fold delta -0.00086 (LARGER than the mean, so the gain does not decay toward the test period). rounds 587 = 178*0.05/lr. The v2 widened space gained only -0.00005 on screen and its lr/min_data_in_leaf optima are interior, so v1 was truncated but already at the optimum."

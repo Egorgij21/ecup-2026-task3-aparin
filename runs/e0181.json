@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0181",
+  "parent_id": "e0101",
+  "date": "2026-08-17T11:39:13",
+  "approach": "nn_seq",
+  "change": "frozen-fold arch search winner #2: gru d32 L3 dropout 0.38 lr 3.3e-03 wd 5.2e-04 batch 256 8 epochs",
+  "tier": "confirm",
+  "n_features": 13,
+  "cv_mean": 1.76549,
+  "cv_std": 0.023,
+  "folds": "[1.77494, 1.79621, 1.77716, 1.74767, 1.73145]",
+  "delta": -0.16313,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 3.4,
+  "seed": 0,
+  "config": "configs/e0181_seqtuned.yaml",
+  "verdict": "",
+  "gini_pred": 0.7781,
+  "total_rel_err": -0.6009,
+  "notes": "2nd (fold4 1.73151); top-3 kept as separate members so the blend can use their disagreement",
+  "best_iters": "[[1.85106, 1.77508, 1.77216, 1.7691, 1.76662, 1.76434, 1.76311, 1.76207], [1.85308, 1.77472, 1.77109, 1.76892, 1.76681, 1.76501, 1.76377, 1.76296], [1.85796, 1.7782, 1.77464, 1.77246, 1.77061, 1.76893, 1.76785, 1.76718], [1.86352, 1.78276, 1.77916, 1.77724, 1.7753, 1.77417, 1.77307, 1.77255], [1.86179, 1.77947, 1.77631, 1.77373, 1.77255, 1.77126, 1.77031, 1.76972]]"
+}

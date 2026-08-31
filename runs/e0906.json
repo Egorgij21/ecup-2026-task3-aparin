@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0906",
+  "parent_id": "e0049",
+  "date": "2026-08-22T22:08:24",
+  "approach": "gbdt_direct",
+  "change": "PSEUDO-LABEL: add the validation-anchor rows with the reference model's own log prediction as label (weight 1.0), refit",
+  "tier": "confirm",
+  "n_features": 665,
+  "cv_mean": 1.76577,
+  "cv_std": 0.02148,
+  "folds": "[1.77344, 1.79413, 1.77734, 1.7514, 1.73255]",
+  "delta": -0.16285,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 144.2,
+  "seed": 0,
+  "config": "configs/e0900_gate.yaml",
+  "verdict": "",
+  "gini_pred": 0.7724,
+  "total_rel_err": -0.5917,
+  "notes": "vs SAME-SESSION refit reference 1.76551: d +0.00026, 0/5 folds, mean log-corr with reference 0.9993. IDEAS.md I18, transductive self-training under the measured test-anchor covariate shift; label-free",
+  "best_iters": "[178, 178, 178, 178, 178]"
+}

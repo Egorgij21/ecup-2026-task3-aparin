@@ -1,0 +1,35 @@
+# e0213 -- FEATURES.md Candidate C, confirmed on the frozen folds under XGBoost.
+#
+# One change vs e0210: the `cohortrel` block (a single column, cohort_rel_buy_rate90 = the
+# trailing-90d buy rate minus the median rate of the user's 14-day join cohort). Lowest prior
+# of the three: it is the smallest screen effect, and cohort-relative LEVELS were already
+# rejected as redundant with the installed rank features. The RATE is the one variant the
+# screen kept positive at both anchors.
+exp_id: e0213
+parent_id: e0210
+approach: gbdt_direct
+change: "+cohort_rel_buy_rate90 (FEATURES.md candidate C), one feature"
+tier: confirm
+seed: 0
+fixed_rounds: 178
+
+feature_blocks: [base, counts, rank, visit, channel, dispersion, sbcnomoment, cohortrel]
+max_train_anchors: null
+
+xgb_params:
+  objective: reg:squarederror
+  eval_metric: rmse
+  learning_rate: 0.05
+  grow_policy: lossguide
+  max_leaves: 63
+  max_depth: 0
+  min_child_weight: 200
+  subsample: 0.8
+  colsample_bytree: 0.8
+  lambda: 1.0
+  max_bin: 256
+  tree_method: hist
+  nthread: 16
+  verbosity: 0
+
+notes: "screen d_rho +0.00011 (A1) / +0.00042 (A2), smallest of the three; lowest prior"

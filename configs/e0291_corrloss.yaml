@@ -1,0 +1,24 @@
+# e0291 -- IDEAS.md §I19: affine-invariant (within-day Pearson) loss on the GRU.
+# ONE change from e0101: corr_lambda. Everything else (arch, d, layers, epochs, lr, seed) is
+# identical, and e0290 (corr_lambda=0) is the byte-identical MSE control run THIS SESSION, so
+# every delta is paired and free of the +0.00027..+0.00046 cross-session drift.
+# Motivation revived by DRW-Crypto 2025 1st place (0.6*MSE+0.4*Pearson MLP) and CISIR
+# (arXiv 2509.16339). The metric after §1b calibration IS within-anchor rho, and §1r proves
+# the correlation must be centred within each calendar day -- which within_day_corr does.
+exp_id: e0291
+parent_id: e0290
+approach: nn_seq
+change: "GRU + within-day Pearson loss, corr_lambda=0.3 (blend (1-lam)*MSE + lam*(1-corr))"
+tier: confirm
+arch: gru
+d_model: 128
+n_blocks: 2
+dropout: 0.1
+dow: false
+epochs: 12
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+seed: 0
+corr_lambda: 0.3
+notes: "corr_lambda=0.3. within_day_corr centres each day-column on its masked mean before pooling covariance, so the term rewards within-anchor rho (EXPERIMENTS.md §1r), not the pooled/calendar correlation."

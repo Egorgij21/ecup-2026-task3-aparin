@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0901",
+  "parent_id": "e0049",
+  "date": "2026-08-22T22:08:23",
+  "approach": "gbdt_direct",
+  "change": "GATE: random 100k-row subsample (TabPFN-3 100k x 2000 regime), 665 feats",
+  "tier": "confirm",
+  "n_features": 665,
+  "cv_mean": 1.77438,
+  "cv_std": 0.02196,
+  "folds": "[1.78198, 1.80402, 1.78571, 1.75926, 1.74093]",
+  "delta": -0.15424,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 144.2,
+  "seed": 0,
+  "config": "configs/e0900_gate.yaml",
+  "verdict": "",
+  "gini_pred": 0.7743,
+  "total_rel_err": -0.6057,
+  "notes": "vs SAME-SESSION refit reference 1.76551: d +0.00887, 0/5 folds, mean log-corr with reference 0.9922. ",
+  "best_iters": "[178, 178, 178, 178, 178]"
+}

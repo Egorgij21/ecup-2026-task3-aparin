@@ -1,0 +1,20 @@
+# e0402_seq_gmv1 -- parent e0101 (all 13 channels). ONE change: the CHANNEL SUBSET.
+# the single gmv channel -- the per-channel extreme
+#   channels: gmv
+# Everything else identical to e02948_seqd48 (GRU d48, the measured width optimum).
+exp_id: e0402_seq_gmv1
+parent_id: e0101
+approach: nn_seq
+change: "channel subset: gmv (the single gmv channel -- the per-channel extreme)"
+tier: confirm
+seed: 0
+arch: gru
+d_model: 48
+n_blocks: 2
+dropout: 0.1
+dow: false
+epochs: 12
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+notes: "channel-split diversity test; unlike the killed lookback ensemble the information sets are OVERLAPPING-BUT-DIFFERENT, not nested"

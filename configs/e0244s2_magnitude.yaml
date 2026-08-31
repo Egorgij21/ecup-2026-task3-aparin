@@ -1,0 +1,48 @@
+# e0244 -- IDEAS.md I13 magnitude term, ALL-USERS same-harness CONTROL.
+# Scored as corr(L, .|Z=1) on the buyer subset against the measured ceiling 0.6001,
+# NOT end-to-end. e0049's achieved value on this statistic is 0.4814 (reproduced exactly
+# from oof/e0049.parquet: per-fold 0.4701/0.4659/0.4807/0.4934/0.4986, n=597,279).
+#
+# WHY THE PAIR: e0240 vs e0241 is buyers-only vs all-users IN THE SAME HARNESS. Comparing
+# e0240 against e0049's 0.4814 directly would confound the change with harness drift
+# (e0195 measured +0.00046 for a config with ZERO changes across sessions).
+#
+# NOT SUBMITTABLE: on zero-target users the output is meaningless by construction. That is
+# intended -- e0010 multiplied the halves and scored the product, which is exactly why this
+# term stayed invisible for the whole project.
+#
+# PRE-REGISTERED KILL CONDITION (scratch_thoughts.md, written before running):
+#   if corr(L,.|Z=1) does not exceed the e0241 control by more than 0.002, the direction is
+#   dead and I13's 80.2% is a property of the task, not of our training choice.
+exp_id: e0244s2
+parent_id: e0049
+approach: gbdt_direct
+change: "IDEAS.md I13: magnitude model trained on all, scored corr(L,.|Z=1) vs the 0.6001 ceiling"
+tier: confirm
+seed: 2
+es_gap_days: 30
+fixed_rounds: 178
+
+model: magnitude_only
+magnitude_train_on: all
+
+feature_blocks: [base, counts, rank, visit, channel, dispersion, sbcnomoment]
+max_train_anchors: null
+
+num_boost_round: 3000
+early_stopping_rounds: 100
+lgb_params:
+  objective: regression
+  metric: rmse
+  learning_rate: 0.05
+  num_leaves: 63
+  min_data_in_leaf: 200
+  feature_fraction: 0.8
+  bagging_fraction: 0.8
+  bagging_freq: 1
+  lambda_l2: 1.0
+  max_bin: 255
+  num_threads: 16
+  verbosity: -1
+
+notes: "I13 arm. Ceiling 0.6001 (Sahani-Linden signal power, conditioned on the SCORED window being positive). e0049 achieved 0.4814 = 80.2% captured vs 89.6% for the buy flag."

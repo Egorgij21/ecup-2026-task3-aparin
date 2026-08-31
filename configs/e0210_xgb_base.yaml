@@ -1,0 +1,50 @@
+# e0210 -- XGBoost on e0049's exact 665-feature set, frozen folds.
+#
+# WHY THIS RUN EXISTS. FEATURES.md asks for a confirm of three screen candidates. A confirm
+# needs a parent that differs by exactly one thing (§4.1), so validating those features under
+# XGBoost requires an XGBoost baseline on the identical feature set first -- otherwise the
+# candidate runs change model family AND feature set at once and neither delta is readable.
+#
+# e0210 is therefore a pure FAMILY reference, and it is also the one number that tells us
+# whether XGB is worth anything here at all: §1c killed XGBoost/CatBoost/Ridge at UNTUNED
+# quality (+0.00001 in the blend), but that was under the user-split harness at lr=0.05/depth=8
+# -- never on the frozen folds at LightGBM-comparable settings.
+#
+# PARAMETER MAPPING (this is what makes it a fair reference rather than a different model):
+#   lgb num_leaves 63          -> grow_policy lossguide + max_leaves 63, max_depth 0 (no cap)
+#   lgb min_data_in_leaf 200   -> min_child_weight 200  (squared error => hessian 1 per row,
+#                                 so sum-of-hessians per leaf IS the row count)
+#   lgb feature_fraction 0.8   -> colsample_bytree 0.8
+#   lgb bagging_fraction 0.8   -> subsample 0.8 (bagging_freq 1 == every round)
+#   lgb lambda_l2 1.0          -> lambda 1.0
+#   lgb max_bin 255            -> max_bin 256 (xgb counts bin EDGES; 255 lgb bins == 256 xgb)
+#   178 fixed rounds, lr 0.05  -> identical; no early stopping, no ES holdout (EXPERIMENTS.md
+#                                 §1j: never score against a variable-length early-stopped fit)
+exp_id: e0210
+parent_id: e0049
+approach: gbdt_direct
+change: "XGBoost instead of LightGBM, e0049's 665 features and matched hyperparameters"
+tier: confirm
+seed: 0
+fixed_rounds: 178
+
+feature_blocks: [base, counts, rank, visit, channel, dispersion, sbcnomoment]
+max_train_anchors: null
+
+xgb_params:
+  objective: reg:squarederror
+  eval_metric: rmse
+  learning_rate: 0.05
+  grow_policy: lossguide
+  max_leaves: 63
+  max_depth: 0
+  min_child_weight: 200
+  subsample: 0.8
+  colsample_bytree: 0.8
+  lambda: 1.0
+  max_bin: 256
+  tree_method: hist
+  nthread: 16
+  verbosity: 0
+
+notes: "family reference for the FEATURES.md confirms (e0211-e0214); e0049 = 1.76551"

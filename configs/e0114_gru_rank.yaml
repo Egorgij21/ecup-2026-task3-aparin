@@ -1,0 +1,33 @@
+# e0114 -- parent e0101, ONE change: +5 cross-sectional rank channels.
+#
+# THIS IS THE EXPERIMENT e0110/e0113 POINT AT. Those two settled that the multi-window derived
+# channels are not information, they are a substitute for long-range integration: the TCN gained
+# -0.00165 from them (5/5 folds), the GRU -- which already integrates -- LOST +0.00137 (0/5).
+# So the filter for anything added from here is: CAN THE NETWORK COMPUTE IT ITSELF?
+#
+# For a user's rank among other users on the same day the answer is no, at any depth or width:
+# every architecture here processes one user's sequence in isolation, so cross-sectional
+# position is strictly outside the hypothesis space. It is the only family we have found that
+# the derived-channel result does not predict will be redundant.
+#
+# Prior is decent: the GBDT's own `rank` block (e0004) was a keep, CLAUDE.md §7 lists
+# "cross-sectional rank within timestamp" as a first-class family, and ranks are level-invariant
+# where raw levels drift (E[L] 2.13 -> 2.44 across anchors, with the test outside that range).
+# Only 5 channels, so the dilution that hurt e0110 is minimal.
+exp_id: e0114
+parent_id: e0101
+approach: nn_seq
+change: "+5 cross-sectional rank channels (rank within the day's population of gmv30/ord30/days30/recency/geo3)"
+tier: confirm
+seed: 0
+arch: gru
+d_model: 128
+n_blocks: 2
+dropout: 0.1
+dow: false
+rank_channels: true
+epochs: 12
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+notes: "the only family a per-user sequence model provably cannot build for itself"

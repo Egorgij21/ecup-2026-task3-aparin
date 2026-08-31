@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0291",
+  "parent_id": "e0290",
+  "date": "2026-08-23T09:15:51",
+  "approach": "nn_seq",
+  "change": "GRU + within-day Pearson loss, corr_lambda=0.3 (blend (1-lam)*MSE + lam*(1-corr))",
+  "tier": "confirm",
+  "n_features": 13,
+  "cv_mean": 1.7649,
+  "cv_std": 0.02114,
+  "folds": "[1.77291, 1.79366, 1.77497, 1.74998, 1.73296]",
+  "delta": -0.16372,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 3.8,
+  "seed": 0,
+  "config": "configs/e0291_corrloss.yaml",
+  "verdict": "",
+  "gini_pred": 0.7728,
+  "total_rel_err": -0.5836,
+  "notes": "corr_lambda=0.3. within_day_corr centres each day-column on its masked mean before pooling covariance, so the term rewards within-anchor rho (EXPERIMENTS.md \u00a71r), not the pooled/calendar correlation.",
+  "best_iters": "[[1.85342, 1.77614, 1.77159, 1.77005, 1.76711, 1.76478, 1.76352, 1.76148, 1.75883, 1.75654, 1.75453, 1.75337], [1.84863, 1.77357, 1.77041, 1.76943, 1.76708, 1.76551, 1.76354, 1.76222, 1.76016, 1.75833, 1.75655, 1.75575], [1.8545, 1.77733, 1.77467, 1.77309, 1.77064, 1.76885, 1.76827, 1.76663, 1.76463, 1.7632, 1.76186, 1.76105], [1.85871, 1.78256, 1.7785, 1.77733, 1.7757, 1.77439, 1.77366, 1.77212, 1.77056, 1.76924, 1.76799, 1.76724], [1.86172, 1.77871, 1.77595, 1.77431, 1.77295, 1.77195, 1.77072, 1.76945, 1.76827, 1.76718, 1.76628, 1.76567]]"
+}

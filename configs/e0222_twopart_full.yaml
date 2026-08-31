@@ -1,0 +1,53 @@
+# e0222 -- the two-part hurdle model, RETESTED on the mature feature set.  IDEAS.md §I14.
+#
+# ONE change vs e0220 (the matched-protocol L2 control): `model: two_part`.  Same 665-feature
+# blocks, same folds, same anchors, same early stopping, same hyperparameters, same seed.
+#
+# WHY THIS IS NOT A RE-RUN OF A GRAVEYARD ENTRY.  e0010 tested the hurdle at **62 features**
+# (`feature_blocks: [base]`) against a 62-feature parent and scored -0.00011.  That single
+# early result is what put the two-part model in the graveyard -- and it is also what
+# PAPERS_FEATURES_AND_IDEAS.md §0.1 leans on to kill the whole ZILN / OptDist line ("correctly
+# adapted to our metric, ZILN and OptDist ARE the thing we already killed").  The feature set
+# has since grown 10x and the hurdle was never retested on it.
+#
+# AND THERE IS NOW A MEASURED REASON TO EXPECT A DIFFERENT ANSWER.  IDEAS.md §I13 put the first
+# ceiling on the magnitude term: 0.6001 against 0.4814 achieved, i.e. 80.2% captured, against
+# 89.6% for the buy/no-buy term.  §I14's screen then showed a DEDICATED buyers-only magnitude
+# model beats the joint model at that term by +0.058 / +0.071 at two anchors -- with a matched
+# training-size control at -0.004 / -0.007, so it is the buyer restriction and not data volume.
+# The hurdle is the cheapest way to put a dedicated magnitude model into the pipeline.
+#
+# PRE-REGISTERED: keep only if |cv(e0222) - cv(e0220)| > 2*sigma_noise = 0.00018, or it wins
+# >= 4/5 folds (CLAUDE.md §3.4).  A better magnitude half does NOT have to survive
+# recombination -- that is the separate question §I13 warns about, and it is why this is
+# scored end-to-end here rather than assumed.
+exp_id: e0222
+parent_id: e0220
+approach: gbdt_direct
+change: "two-part hurdle P(buy) x E[log1p|buy] on the 665-feature set (e0010 used 62)"
+tier: confirm
+seed: 0
+es_gap_days: 30
+fixed_rounds: 0
+model: two_part
+
+feature_blocks: [base, counts, rank, visit, channel, dispersion, sbcnomoment]
+max_train_anchors: null
+
+num_boost_round: 3000
+early_stopping_rounds: 100
+lgb_params:
+  objective: regression
+  metric: rmse
+  learning_rate: 0.05
+  num_leaves: 63
+  min_data_in_leaf: 200
+  feature_fraction: 0.8
+  bagging_fraction: 0.8
+  bagging_freq: 1
+  lambda_l2: 1.0
+  max_bin: 255
+  num_threads: 16
+  verbosity: -1
+
+notes: "IDEAS.md I13/I14. Retest of graveyard entry e0010 at 10x the feature count, motivated by a measured magnitude-term ceiling."

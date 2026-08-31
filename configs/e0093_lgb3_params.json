@@ -1,0 +1,18 @@
+{
+  "model": "lgb",
+  "params": {
+    "learning_rate": 0.007652927717533519,
+    "num_leaves": 153,
+    "min_data_in_leaf": 1594,
+    "feature_fraction": 0.2856603391155135,
+    "bagging_fraction": 0.6454481262149945,
+    "bagging_freq": 1,
+    "lambda_l1": 0.035968501752339774,
+    "lambda_l2": 0.17660143263913397,
+    "min_gain_to_split": 0.0001681153441783196,
+    "max_bin": 511,
+    "num_threads": 16
+  },
+  "rounds": 1162,
+  "cv_mean": 1.764531743718583
+}

@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0100",
+  "parent_id": "e0000_naive_geo3",
+  "date": "2026-08-13T11:00:47",
+  "approach": "nn_seq",
+  "change": "seq baseline: causal dilated TCN (d128, 8 blocks, RF 511d) on the 13-channel raw daily panel, dense per-day supervision",
+  "tier": "confirm",
+  "n_features": 13,
+  "cv_mean": 1.76775,
+  "cv_std": 0.02052,
+  "folds": "[1.77672, 1.79449, 1.77726, 1.75502, 1.73525]",
+  "delta": -0.16087,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 8.7,
+  "seed": 0,
+  "config": "configs/e0100_seq_tcn.yaml",
+  "verdict": "",
+  "gini_pred": 0.777,
+  "total_rel_err": -0.5411,
+  "notes": "First run of a new approach. Reported as tier=screen because the epoch count has not yet been calibrated against anything -- the number to read off this run is the wall-clock and the shape of the loss curve, not the CV. The confirm-tier run fixes epochs first.\n",
+  "best_iters": "[[1.85621, 1.78389, 1.77715, 1.7746, 1.7709, 1.76779, 1.76792, 1.76586, 1.76386, 1.76233, 1.76092, 1.76035], [1.85892, 1.78262, 1.77556, 1.77183, 1.76998, 1.76842, 1.76716, 1.76582, 1.76406, 1.76265, 1.76143, 1.76082], [1.86428, 1.78287, 1.77882, 1.77579, 1.77352, 1.77204, 1.77059, 1.76926, 1.76812, 1.76655, 1.76554, 1.76496], [1.87234, 1.78965, 1.78336, 1.78042, 1.77782, 1.77697, 1.7754, 1.77382, 1.77266, 1.77151, 1.77061, 1.77005], [1.86477, 1.78683, 1.77961, 1.7766, 1.77495, 1.77327, 1.77239, 1.77049, 1.76952, 1.76839, 1.76756, 1.76699]]"
+}

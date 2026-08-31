@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0905",
+  "parent_id": "e0049",
+  "date": "2026-08-22T22:08:23",
+  "approach": "gbdt_direct",
+  "change": "GATE: random 100k rows, min_data_in_leaf 200 -> 20 (small-N-fair LightGBM config)",
+  "tier": "confirm",
+  "n_features": 665,
+  "cv_mean": 1.77692,
+  "cv_std": 0.02222,
+  "folds": "[1.78485, 1.80588, 1.79038, 1.75938, 1.74409]",
+  "delta": -0.1517,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 144.2,
+  "seed": 0,
+  "config": "configs/e0900_gate.yaml",
+  "verdict": "",
+  "gini_pred": 0.7733,
+  "total_rel_err": -0.5975,
+  "notes": "vs SAME-SESSION refit reference 1.76551: d +0.01141, 0/5 folds, mean log-corr with reference 0.9907. brackets e0282: if the gap closes, the penalty was under-fitting, not information",
+  "best_iters": "[178, 178, 178, 178, 178]"
+}

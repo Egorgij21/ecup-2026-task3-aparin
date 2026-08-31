@@ -1,0 +1,33 @@
+# e0340 (was e0310; renamed -- a concurrent usercv_andrena job claimed e0310) -- TabICLv2 (BSD-3) on the frozen folds, as a BLEND MEMBER not a standalone model.
+#
+# The §I17 gate (e0281-e0286) priced what a TFM's row-context constraint costs in QUALITY and
+# concluded "weaker near-twin". That is right about quality and silent about the thing the
+# blend actually pays for. Against the current champion (rho 0.66335, bar rho_partial 0.04073):
+#
+#     if r = 0.95  needs rho_B 0.63970   <- BELOW the 100k-row gate arm's 0.65707
+#     if r = 0.98  needs rho_B 0.65615   <- also below it
+#     if r = 0.99  needs rho_B 0.66102
+#
+# So a TFM that is WEAKER than our own handicapped LightGBM clears the bar if r <= 0.98.
+# In-context learning is the only candidate function class with a mechanism to land there:
+# no split-finding, no greedy loss descent, so its errors are not built the same way. Every
+# GBDT variant has hit r >= 0.998 (six families, three libraries, EXPERIMENTS.md 9d).
+#
+# The decision number is NOT cv_mean. It is r and rho_partial against the champion.
+exp_id: e0340
+parent_id: e0049
+approach: tfm_icl
+change: "TabICLv2 in-context learner, 100k context x top-200 features -- the one untested function class"
+tier: confirm
+backend: tabicl
+seed: 0
+device: cuda
+context_rows: 100000        # TabICLv2 handles ~100k; the gate priced this regime at +0.00887
+top_features: 200           # from the existing null-importance whitelist; the gate showed the
+                            # top-200 cut is nil (+0.00020) so this costs almost nothing
+predict_batch: 20000
+
+feature_blocks: [base, counts, rank, visit, channel, dispersion, sbcnomoment]
+
+notes: "The one untested function class. Licence-clean (BSD-3) unlike TabPFN, whose weights are
+  non-commercial and unclear for an Ozon-hosted contest. Judge on r/rho_partial, not cv_mean."

@@ -1,0 +1,26 @@
+# e0111 -- parent e0101, ONE change: backbone gru -> cnngru (4 dilated causal conv blocks
+# feeding a 2-layer GRU).
+#
+# HYPOTHESIS. The TCN (e0100, 1.76775) and the GRU (e0101, 1.76458) correlate at 0.9955 in
+# log-prediction space -- the LOWEST pair inside the seq family -- so they demonstrably compute
+# different things. The conv stack extracts local pattern with a fixed 31-day reach; the GRU
+# integrates without bound but must push everything through one hidden state. Stacking them
+# feeds the recurrence pre-summarised structure instead of raw daily noise.
+exp_id: e0111
+parent_id: e0101
+approach: nn_seq
+change: "backbone gru -> cnngru (4 dilated causal conv blocks -> 2-layer GRU), 13 channels"
+tier: confirm
+seed: 0
+arch: cnngru
+d_model: 128
+n_blocks: 2          # = GRU layers
+arch_kwargs:
+  n_conv: 4          # dilations 1,2,4,8 -> 31-day local reach before the recurrence
+dropout: 0.1
+dow: false
+epochs: 12
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+notes: "CNN front-end + GRU; the two lowest-correlated members of the seq family, composed"

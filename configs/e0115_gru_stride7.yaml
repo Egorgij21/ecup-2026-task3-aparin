@@ -1,0 +1,24 @@
+# e0115 -- parent e0101, ONE change: supervise every 7th day instead of every day.
+#
+# THIS PRICES DENSE SUPERVISION, which is the thing a one-target-per-window design gives up.
+# A bidirectional encoder over [0, t] emits ONE prediction per forward pass rather than 409,
+# so it must train on an anchor grid; stride 7 is exactly the grid data/fold_spec.json gives
+# the GBDT. Whatever this costs is the handicap any such design starts from, and it has to
+# beat that handicap with expressiveness before it is worth building.
+exp_id: e0115
+parent_id: e0101
+approach: nn_seq
+change: "supervise every 7th day instead of every day (train_stride=7) -- prices the dense-supervision advantage"
+tier: confirm
+seed: 0
+arch: gru
+d_model: 128
+n_blocks: 2
+dropout: 0.1
+dow: false
+train_stride: 7
+epochs: 12
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+notes: "not a candidate model; a measurement of what the seq approach's structural advantage is worth"

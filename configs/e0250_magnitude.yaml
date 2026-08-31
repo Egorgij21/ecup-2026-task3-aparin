@@ -1,0 +1,123 @@
+# e0250-e0257 -- the MAGNITUDE sweep. IDEAS.md §I13's named next experiment.
+#
+# §I13 measured both halves of the task against a test-retest ceiling and found the model
+# proportionally weakest exactly where the project stopped looking:
+#
+#     term                          ceiling   achieved   captured
+#     buy flag      corr(Z, .)      0.6623    0.5932     89.6 %
+#     magnitude     corr(L, .|Z=1)  0.6001    0.4814     80.2 %
+#
+# Every arm below trains on BUYERS ONLY and is scored `corr(L, .|Z=1)` against a same-session
+# all-rows L2 reference re-fitted inside every fold. Arms differ from that reference, and from
+# each other, by exactly one declared thing.
+#
+# THE HONEST PRIOR. e0010's hurdle attacked this term once and scored -0.00012. It shared the
+# features AND the loss AND was scored end to end. These arms break the second of those (loss
+# geometry on the buyer subset) and the third (conditional scoring). The information axis is
+# NOT reopened -- §1q showed no feature can clear incremental R^2 0.0002 against the residual,
+# so every arm here holds the 665 features fixed. This is a loss/regime sweep, not a feature
+# hunt.
+#
+# ⚠ NOT A SUBMISSION. rho|Z=1 is a diagnostic: at test time we do not know who buys. A gain
+# here has to survive recombination with the classifier before it means anything for RMSLE,
+# and §I13 warns the oracle-path conversion rate has historically been ~0.
+parent_id: e0049
+tier: confirm
+seed: 0
+fixed_rounds: 178
+
+feature_blocks: [base, counts, rank, visit, channel, dispersion, sbcnomoment]
+
+lgb_params:
+  objective: regression
+  metric: rmse
+  learning_rate: 0.05
+  num_leaves: 63
+  min_data_in_leaf: 200
+  feature_fraction: 0.8
+  bagging_fraction: 0.8
+  bagging_freq: 1
+  lambda_l2: 1.0
+  max_bin: 255
+  num_threads: 16
+  verbosity: -1
+
+arms:
+  # ---- the isolation itself: same loss, same params, buyers-only training population
+  - exp_id: e0250
+    kind: l2
+    change: "train on BUYERS ONLY (y>0), L2 on log1p, score corr(L,.|Z=1) -- the isolation alone"
+    notes: "the control for every arm below: if this alone moves rho|Z=1, the gain is the
+      restricted population, not the loss. If it does not, e0010's hurdle null is reproduced
+      under conditional scoring and the term needs a different loss, not a different split."
+
+  # ---- loss geometry on the buyer subset. L among buyers is heavy-tailed and L2 spends its
+  # capacity on the top tail; these two stop it doing that, in different ways.
+  - exp_id: e0251
+    kind: huber
+    alpha: 1.0
+    change: "buyers-only + Huber(alpha=1.0) instead of L2 -- bound the tail's gradient"
+  - exp_id: e0252
+    kind: l1
+    change: "buyers-only + L1 (predicts the conditional MEDIAN, not the mean)"
+    notes: "expected to LOSE on rho if the mean is the right functional -- it is the falsifier
+      for 'the tail is the problem'. A win here would mean the L2 estimate is tail-dragged."
+
+  # ---- target parametrisation, monotone so the estimand is preserved on inversion
+  - exp_id: e0253
+    kind: rankgauss
+    change: "buyers-only + rank-Gaussian target, predictions mapped back to the L scale"
+    notes: "the shape of the residual changes, the ORDER does not. Inverse map is the empirical
+      quantile function of the training L, so the output is on the L scale and rho comparable."
+
+  # ---- capacity. 44% of rows are gone, so the effective sample per leaf changed; the
+  # inherited min_data_in_leaf=200 was tuned for the full population, not this one.
+  - exp_id: e0254
+    kind: capacity
+    num_leaves: 255
+    min_data_in_leaf: 40
+    change: "buyers-only + higher capacity (leaves 63->255, min_data 200->40)"
+  - exp_id: e0255
+    kind: capacity
+    num_leaves: 31
+    min_data_in_leaf: 800
+    change: "buyers-only + lower capacity (leaves 63->31, min_data 200->800)"
+    notes: "brackets e0254. If neither side of the bracket moves, capacity is flat here as it
+      was on the full population, and the regime question is closed rather than untested."
+
+  # ---- the project's own tuned optimum, applied to a population it was never tuned on
+  - exp_id: e0256
+    kind: tuned
+    rounds: 1162
+    params:
+      learning_rate: 0.007652927717533519
+      num_leaves: 153
+      min_data_in_leaf: 1594
+      feature_fraction: 0.2856603391155135
+      bagging_fraction: 0.6454481262149945
+      lambda_l1: 0.035968501752339774
+      lambda_l2: 0.17660143263913397
+      max_bin: 511
+    change: "buyers-only + e0093's tuned LightGBM params (tuned on ALL rows, applied to buyers)"
+    notes: "e0093 scored 1.76453 on all rows. Whether its optimum transfers to a population
+      with 44% of the rows removed is itself the question -- min_data_in_leaf 1594 is a large
+      fraction of a buyers-only leaf budget."
+
+  # ---- the combination the sweep exists to test, only meaningful if a component wins
+  - exp_id: e0257
+    kind: tuned
+    rounds: 1162
+    params:
+      objective: huber
+      alpha: 1.0
+      learning_rate: 0.007652927717533519
+      num_leaves: 153
+      min_data_in_leaf: 1594
+      feature_fraction: 0.2856603391155135
+      bagging_fraction: 0.6454481262149945
+      lambda_l1: 0.035968501752339774
+      lambda_l2: 0.17660143263913397
+      max_bin: 511
+    change: "buyers-only + tuned params + Huber (e0256 x e0251 interaction)"
+    notes: "CLAUDE.md 4.1: a combination is its own experiment and must be re-validated; the
+      deltas of e0251 and e0256 do not add. Interpreted only against those two."

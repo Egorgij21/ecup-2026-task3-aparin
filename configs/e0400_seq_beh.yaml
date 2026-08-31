@@ -1,0 +1,20 @@
+# e0400_seq_beh -- parent e0101 (all 13 channels). ONE change: the CHANNEL SUBSET.
+# behavioural only -- deliberately GMV-BLIND
+#   channels: presence,searches,cat,s2c,c2c,cart
+# Everything else identical to e02948_seqd48 (GRU d48, the measured width optimum).
+exp_id: e0400_seq_beh
+parent_id: e0101
+approach: nn_seq
+change: "channel subset: presence,searches,cat,s2c,c2c,cart (behavioural only -- deliberately GMV-BLIND)"
+tier: confirm
+seed: 0
+arch: gru
+d_model: 48
+n_blocks: 2
+dropout: 0.1
+dow: false
+epochs: 12
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+notes: "channel-split diversity test; unlike the killed lookback ensemble the information sets are OVERLAPPING-BUT-DIFFERENT, not nested"

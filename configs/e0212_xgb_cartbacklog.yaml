@@ -1,0 +1,33 @@
+# e0212 -- FEATURES.md Candidate B, confirmed on the frozen folds under XGBoost.
+#
+# One change vs e0210: the `cartbacklog` block (a single column, cart_backlog_7 =
+# max(cart_7 - ord_7, 0)). No installed feature forms the STOCK of selected-but-unconverted
+# items -- cart is present as inflow and orders as outflow, never the difference.
+exp_id: e0212
+parent_id: e0210
+approach: gbdt_direct
+change: "+cart_backlog_7 (FEATURES.md candidate B), one feature"
+tier: confirm
+seed: 0
+fixed_rounds: 178
+
+feature_blocks: [base, counts, rank, visit, channel, dispersion, sbcnomoment, cartbacklog]
+max_train_anchors: null
+
+xgb_params:
+  objective: reg:squarederror
+  eval_metric: rmse
+  learning_rate: 0.05
+  grow_policy: lossguide
+  max_leaves: 63
+  max_depth: 0
+  min_child_weight: 200
+  subsample: 0.8
+  colsample_bytree: 0.8
+  lambda: 1.0
+  max_bin: 256
+  tree_method: hist
+  nthread: 16
+  verbosity: 0
+
+notes: "screen d_rho +0.00090 (A1) / +0.00052 (A2); the stock between cart inflow and order outflow"

@@ -1,0 +1,19 @@
+# e0104 -- parent e0100, ONE change: d_model 128 -> 256.
+# Capacity, isolated from training length (e0103). 250k users x ~30M supervised user-days is a
+# lot of signal for a 1.1M-parameter model; if capacity binds, this moves and e0103 does not.
+exp_id: e0104
+parent_id: e0100
+approach: nn_seq
+change: "d_model 128 -> 256, everything else identical to e0100"
+tier: confirm
+seed: 0
+arch: tcn
+d_model: 256
+n_blocks: 8
+dropout: 0.1
+dow: false
+epochs: 12
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+notes: "capacity lever, isolated from the epoch lever"

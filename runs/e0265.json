@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0265",
+  "parent_id": "e0049",
+  "date": "2026-08-22T22:39:56",
+  "approach": "gbdt_direct",
+  "change": "5-seed averaging + buyer weight 2.0 (e0260 x e0263 interaction)",
+  "tier": "confirm",
+  "n_features": 665,
+  "cv_mean": 1.82551,
+  "cv_std": 0.01543,
+  "folds": "[1.83109, 1.8434, 1.83143, 1.82447, 1.79717]",
+  "delta": -0.10311,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 467.8,
+  "seed": 0,
+  "config": "configs/e0260_regime.yaml",
+  "verdict": "kill",
+  "gini_pred": 0.7135,
+  "total_rel_err": -0.5154,
+  "notes": "5-seed averaging + buyer weight 2.0. d +0.06000, 0/5 folds. The bad component dominates the good one; deltas do not add (CLAUDE.md 4.1).",
+  "best_iters": "[178, 178, 178, 178, 178]"
+}

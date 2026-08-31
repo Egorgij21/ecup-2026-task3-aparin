@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0252",
+  "parent_id": "e0049",
+  "date": "2026-08-22T18:25:06",
+  "approach": "gbdt_magnitude",
+  "change": "buyers-only + L1 (predicts the conditional MEDIAN, not the mean)",
+  "tier": "confirm",
+  "n_features": 665,
+  "cv_mean": 1.11771,
+  "cv_std": 0.00311,
+  "folds": "[1.11389, 1.12167, 1.11423, 1.11984, 1.11893]",
+  "delta": 0.055,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 227.4,
+  "seed": 0,
+  "config": "configs/e0250_magnitude.yaml",
+  "verdict": "kill",
+  "gini_pred": 0.0,
+  "total_rel_err": 0.0,
+  "notes": "rho|Z=1 0.53675 vs same-session all-rows ref 0.48175 (d +0.05500, 5/5 folds); ceiling 0.6001; cv_mean col = RMSLE among BUYERS ONLY, not the competition metric. expected to LOSE on rho if the mean is the right functional -- it is the falsifier for 'the tail is the problem'. A win here would mean the L2 estimate is tail-dragged. | MAGNITUDE ARM. rho|Z=1 beats the isotonic control by +0.028 (genuine information, NOT recalibration) but LOO RMSLE through the hurdle is WORSE than clf x e0049 by +0.00025..+0.00133. Pre-registered bar required BOTH; only 'info' achieved. This is IDEAS.md I13's conversion failure, measured: the magnitude term has real unclaimed signal and it does not reach the metric. See EXPERIMENTS.md 1r.",
+  "best_iters": "[178, 178, 178, 178, 178]"
+}

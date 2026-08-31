@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0260",
+  "parent_id": "e0049",
+  "date": "2026-08-22T22:39:55",
+  "approach": "gbdt_direct",
+  "change": "5-seed averaging in LOG space, e0049 regime otherwise unchanged",
+  "tier": "confirm",
+  "n_features": 665,
+  "cv_mean": 1.76516,
+  "cv_std": 0.02158,
+  "folds": "[1.77298, 1.79375, 1.77666, 1.75043, 1.732]",
+  "delta": -0.16345,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 467.8,
+  "seed": 0,
+  "config": "configs/e0260_regime.yaml",
+  "verdict": "keep",
+  "gini_pred": 0.7724,
+  "total_rel_err": -0.5919,
+  "notes": "5-seed averaging in log space. CV 1.76516, d -0.00034 vs same-session e0049-regime ref, 5/5 folds, 3.8 sigma. Closes EXPERIMENTS.md section 4 note 3 (GBDT multi-seed averaging, listed as never run). NOTE: screen tier said -0.00170; the confirm gives -0.00034, a 5x screen inflation (2 anchors leave far more seed variance to average than 8-25 do). Does NOT help the blend: seed averaging raises member rho AND its correlation with the blend, so rho_partial falls (measured on the e0101 seed replicates: -0.00048 -> -0.00330).",
+  "best_iters": "[178, 178, 178, 178, 178]"
+}

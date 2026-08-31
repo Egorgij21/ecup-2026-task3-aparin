@@ -1,0 +1,44 @@
+# e0221 -- HL-Gauss histogram loss.  IDEAS.md §I1.  ONE change vs e0220: the objective.
+#
+# Squared error on L = log1p(y)  ->  softmax cross-entropy over K bins of L against a
+# Gaussian-smoothed target distribution, read out as sum_k p_k * c_k.  The ESTIMAND is
+# unchanged (E[L|x], the functional RMSLE elicits), so this is not ZILN/OptDist/the hurdle,
+# all of which estimate E[y|x] and are already killed here.  Same features, same folds, same
+# anchors, same hyperparameters, same seed, same early-stopping statistic.
+#
+# Motivation: all ten model families in experiments.csv minimise the same divergence, which is
+# the most likely single cause of rho ~ 0.704 everywhere and r ~ 0.99 between blend members.
+# Refs: Imani & White ICML 2018; Farebrother et al. ICML 2024; Wang et al. JMLR 2026 (whose
+# finding -- the gain is optimisation, not information -- is the honest prior here).
+exp_id: e0221
+parent_id: e0220
+approach: gbdt_direct
+change: "HL-Gauss cross-entropy over 12 binned log1p targets, readout E[L]=sum p_k c_k"
+tier: confirm
+seed: 0
+es_gap_days: 30
+fixed_rounds: 0
+model: hlgauss
+hl_bins: 12
+hl_sigma_ratio: 0.75
+
+feature_blocks: [base, counts, rank, visit, channel, dispersion, sbcnomoment]
+max_train_anchors: null
+
+num_boost_round: 3000
+early_stopping_rounds: 100
+lgb_params:
+  objective: regression
+  metric: rmse
+  learning_rate: 0.05
+  num_leaves: 63
+  min_data_in_leaf: 200
+  feature_fraction: 0.8
+  bagging_fraction: 0.8
+  bagging_freq: 1
+  lambda_l2: 1.0
+  max_bin: 255
+  num_threads: 16
+  verbosity: -1
+
+notes: "IDEAS.md E-IDEA-01. Port gate (custom objective == LightGBM multiclass, max|d raw|=0) runs inside the job and aborts on failure."

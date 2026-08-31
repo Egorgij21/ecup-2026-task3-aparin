@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0290",
+  "parent_id": "e0101",
+  "date": "2026-08-23T09:12:03",
+  "approach": "nn_seq",
+  "change": "control: e0101 GRU, corr_lambda=0 (byte-identical MSE path), SAME-SESSION reference",
+  "tier": "confirm",
+  "n_features": 13,
+  "cv_mean": 1.76458,
+  "cv_std": 0.0211,
+  "folds": "[1.77291, 1.79298, 1.77464, 1.74997, 1.7324]",
+  "delta": -0.16404,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 3.7,
+  "seed": 0,
+  "config": "configs/e0290_corrloss.yaml",
+  "verdict": "",
+  "gini_pred": 0.7722,
+  "total_rel_err": -0.584,
+  "notes": "corr_lambda=0.0. within_day_corr centres each day-column on its masked mean before pooling covariance, so the term rewards within-anchor rho (EXPERIMENTS.md \u00a71r), not the pooled/calendar correlation.",
+  "best_iters": "[[1.85099, 1.77739, 1.77161, 1.77016, 1.76717, 1.76523, 1.76344, 1.76123, 1.75871, 1.75625, 1.75412, 1.75296], [1.84949, 1.77671, 1.77021, 1.76955, 1.76719, 1.76601, 1.7638, 1.76234, 1.76001, 1.75802, 1.75623, 1.7552], [1.85663, 1.77726, 1.77499, 1.77291, 1.77063, 1.76966, 1.76811, 1.76674, 1.76472, 1.76319, 1.76166, 1.76081], [1.86342, 1.78497, 1.7785, 1.77825, 1.7757, 1.77446, 1.77368, 1.77201, 1.77014, 1.76874, 1.76747, 1.76674], [1.85758, 1.78065, 1.77749, 1.77442, 1.77297, 1.7723, 1.77126, 1.76913, 1.76807, 1.7668, 1.76593, 1.76529]]"
+}

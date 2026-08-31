@@ -1,0 +1,20 @@
+# e0107 -- parent e0101, ONE change: add day-of-week sin/cos channels.
+# Weekly seasonality is weak (DATA.md §5.2: day-of-week medians span 92.5%-104.8%) so the
+# prior is low, but it is the only calendar signal that carries no extrapolation risk -- it
+# repeats every 7 days, so the test window is interpolation, not extrapolation.
+exp_id: e0107
+parent_id: e0101
+approach: nn_seq
+change: "+day-of-week sin/cos input channels, everything else identical to e0101"
+tier: confirm
+seed: 0
+arch: gru
+d_model: 128
+n_blocks: 2
+dropout: 0.1
+dow: true
+epochs: 12
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+notes: "only calendar feature with no extrapolation risk; DATA.md 5.2 says weekly seasonality is weak, so low prior"

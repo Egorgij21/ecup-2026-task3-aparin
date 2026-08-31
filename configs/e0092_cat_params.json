@@ -1,0 +1,16 @@
+{
+  "model": "cat",
+  "params": {
+    "grow_policy": "Depthwise",
+    "learning_rate": 0.00847303980027263,
+    "depth": 9,
+    "l2_leaf_reg": 44.72039502184877,
+    "random_strength": 1.374616271502608,
+    "bagging_temperature": 0.9751808257603762,
+    "border_count": 64,
+    "min_data_in_leaf": 1783,
+    "num_threads": 16
+  },
+  "rounds": 1050,
+  "cv_mean": 1.76473173770652
+}

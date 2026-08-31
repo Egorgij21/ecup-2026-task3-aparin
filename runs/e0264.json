@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0264",
+  "parent_id": "e0049",
+  "date": "2026-08-22T22:39:56",
+  "approach": "gbdt_direct",
+  "change": "sample weight 0.5 on buyers -- the opposite direction, brackets e0263",
+  "tier": "confirm",
+  "n_features": 665,
+  "cv_mean": 1.82586,
+  "cv_std": 0.03128,
+  "folds": "[1.83671, 1.86611, 1.84751, 1.79406, 1.78493]",
+  "delta": -0.10276,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 467.8,
+  "seed": 0,
+  "config": "configs/e0260_regime.yaml",
+  "verdict": "kill",
+  "gini_pred": 0.826,
+  "total_rel_err": -0.665,
+  "notes": "buyer sample weight 0.5. d +0.06035, 0/5 folds. Badly worse. With e0263 a clean BRACKET: both directions hurt by nearly the same amount, so L2's implicit row-count weighting of the classification vs magnitude terms is already at its optimum. Closes the lever.",
+  "best_iters": "[178, 178, 178, 178, 178]"
+}

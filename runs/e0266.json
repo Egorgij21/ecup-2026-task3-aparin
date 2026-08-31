@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0266",
+  "parent_id": "e0049",
+  "date": "2026-08-22T22:39:57",
+  "approach": "gbdt_direct",
+  "change": "e0093 tuned params + 3-seed averaging (tuned optimum under seed averaging)",
+  "tier": "confirm",
+  "n_features": 665,
+  "cv_mean": 1.76441,
+  "cv_std": 0.0216,
+  "folds": "[1.77244, 1.79286, 1.77614, 1.74923, 1.73138]",
+  "delta": -0.16421,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 467.8,
+  "seed": 0,
+  "config": "configs/e0260_regime.yaml",
+  "verdict": "keep",
+  "gini_pred": 0.7735,
+  "total_rel_err": -0.5887,
+  "notes": "e0093 tuned params + 3-seed averaging. CV 1.76441, d -0.00110, 5/5 folds, 12.2 sigma. BEST TABULAR CV IN THE PROJECT (prev best e0093 1.76453 / e0090 1.76469). Test predictions via src/predict_seeds.py -> subs/e0266.csv + subs/e0266_cal.csv. Per-user seed sd at 1162 rounds is only 0.0138, which is why the confirm delta is far below the 178-round screen. Standalone submission only -- not a blend member (see e0260 note).",
+  "best_iters": "[1162, 1162, 1162, 1162, 1162]"
+}

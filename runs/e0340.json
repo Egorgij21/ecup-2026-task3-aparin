@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0340",
+  "parent_id": "e0049",
+  "date": "2026-08-23T14:35:01",
+  "approach": "tfm_icl",
+  "change": "TabICLv2 in-context learner, 100k context x top-200 features -- the one untested function class",
+  "tier": "confirm",
+  "n_features": 163,
+  "cv_mean": 1.77013,
+  "cv_std": 0.02135,
+  "folds": "[1.77764, 1.79847, 1.78176, 1.75524, 1.73752]",
+  "delta": -0.15849,
+  "significant": "",
+  "lb": "",
+  "runtime_min": 171.4,
+  "seed": 0,
+  "config": "configs/e0340_tabicl.yaml",
+  "verdict": "kill",
+  "gini_pred": 0.7891,
+  "total_rel_err": -0.5683,
+  "notes": "TabICLv2 (BSD-3) in-context learner, 100k context x top-200 feats, frozen folds. cv 1.77013, pooled rho_B 0.65915 (only -0.0042 behind e0266 -- the I17 gate predicted a +0.00887 RMSLE handicap; the real cost is ~a third of that). DECISION NUMBER: r vs the champion = 0.99433, needed <=0.9866. rho_partial -0.00545 = -13.4% of the bar; LOFO blend test +0.000000, 0/5 folds, out-of-fold weights all 0.00. WORTH KEEPING: ICL DID break the GBDT correlation floor -- every GBDT family sits at r~0.998 (LightGBM/XGBoost/CatBoost/AutoGluon, 6.5x lr range, 185-vs-665 feats), and a function class with no split-finding and no greedy loss descent reached 0.99433, cutting the unexplained fraction (1-r^2) by 2.7x. The mechanism is real; the magnitude is ~a third of what the bar needs. This closes the tabular axis on EVIDENCE rather than inference: a fundamentally different function class at comparable quality still does not decorrelate enough. See EXPERIMENTS.md 9g.",
+  "best_iters": "[]"
+}

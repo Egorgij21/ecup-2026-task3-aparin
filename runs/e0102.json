@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0102",
+  "parent_id": "e0100",
+  "date": "2026-08-13T11:02:54",
+  "approach": "nn_seq",
+  "change": "backbone tcn -> causal transformer, 4 layers x 4 heads, ALiBi (no absolute positions)",
+  "tier": "confirm",
+  "n_features": 13,
+  "cv_mean": 1.76575,
+  "cv_std": 0.01892,
+  "folds": "[1.77167, 1.79202, 1.77512, 1.75249, 1.73743]",
+  "delta": -0.16287,
+  "significant": "yes",
+  "lb": "",
+  "runtime_min": 9.8,
+  "seed": 0,
+  "config": "configs/e0102_seq_xformer.yaml",
+  "verdict": "",
+  "gini_pred": 0.7728,
+  "total_rel_err": -0.5639,
+  "notes": "third inductive bias for the blend; attention can pick out individual past days rather than averaging fixed windows",
+  "best_iters": "[[1.84378, 1.78869, 1.77909, 1.77353, 1.77173, 1.76874, 1.76698, 1.76558, 1.76367, 1.76223, 1.76093, 1.76023], [1.84244, 1.78515, 1.77733, 1.7739, 1.77026, 1.76848, 1.76693, 1.7655, 1.76429, 1.76297, 1.76172, 1.7611], [1.84679, 1.78788, 1.77902, 1.77663, 1.77443, 1.77151, 1.77056, 1.76958, 1.76809, 1.76677, 1.76566, 1.76506], [1.85269, 1.79181, 1.78642, 1.78013, 1.77884, 1.77639, 1.77535, 1.77382, 1.77273, 1.77151, 1.77064, 1.77003], [1.84799, 1.7908, 1.78102, 1.77629, 1.77555, 1.77353, 1.77261, 1.77105, 1.77011, 1.76889, 1.76811, 1.76752]]"
+}

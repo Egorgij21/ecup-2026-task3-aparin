@@ -1,0 +1,23 @@
+{
+  "exp_id": "e0262",
+  "parent_id": "e0049",
+  "date": "2026-08-22T22:39:55",
+  "approach": "gbdt_direct",
+  "change": "sample weight = 0.5^(anchor_age/180d) -- gentler recency decay",
+  "tier": "confirm",
+  "n_features": 665,
+  "cv_mean": 1.76551,
+  "cv_std": 0.0216,
+  "folds": "[1.77333, 1.79409, 1.77718, 1.75052, 1.73244]",
+  "delta": -0.16311,
+  "significant": "no",
+  "lb": "",
+  "runtime_min": 467.8,
+  "seed": 0,
+  "config": "configs/e0260_regime.yaml",
+  "verdict": "kill",
+  "gini_pred": 0.773,
+  "total_rel_err": -0.5901,
+  "notes": "anchor recency decay half-life 180d. d +0.00000, 1/5 folds = no effect. Brackets e0261 at 3x the half-life; the decay surface is flat, like the e0070-e0073 truncation surface.",
+  "best_iters": "[178, 178, 178, 178, 178]"
+}

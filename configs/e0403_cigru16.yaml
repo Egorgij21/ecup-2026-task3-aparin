@@ -1,0 +1,28 @@
+# e0403_cigru16 -- parent e0101. ONE change: arch gru -> cigru (channel-independent recurrence).
+# BACKLOG's rule for useful diversity is "a different INDUCTIVE BIAS over the SAME information".
+# Every other seq model projects the 13 channels into one d-dim vector per day and THEN runs a
+# recurrence, so channels mix before any temporal processing. cigru inverts that: each channel
+# gets its own recurrence (shared weights + a learned channel embedding, so it is one cuDNN call
+# at batch B*C) and they may not interact until the fusion head.
+# Distinct from e0400-e0402, which split the INFORMATION and failed for a measured reason:
+# behavioural-only barely beat naive (1.912 vs 1.927) because those channels modify the monetary
+# signal rather than predict alone. Here the information stays whole; only the processing splits.
+exp_id: e0403_cigru16
+parent_id: e0101
+approach: nn_seq
+change: "arch gru -> cigru (channel-independent recurrence, per-channel width 16)"
+tier: confirm
+seed: 0
+arch: cigru
+d_model: 48
+n_blocks: 2
+dropout: 0.1
+dow: false
+epochs: 12
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+arch_kwargs:
+  ci_width: 16
+  ci_emb: 4
+notes: "capacity brackets the fusion width; the project's width finding says capacity binds hard on this path"
