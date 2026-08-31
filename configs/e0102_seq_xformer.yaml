@@ -1,0 +1,22 @@
+# e0102 -- parent e0100, ONE change: backbone tcn -> causal transformer with ALiBi.
+# No absolute positional embedding by design: the test anchor sits 120 days past the last
+# clean training anchor, which is exactly where an absolute encoding extrapolates badly.
+# ALiBi's distance-only bias keeps the model translation-invariant in time.
+exp_id: e0102
+parent_id: e0100
+approach: nn_seq
+change: "backbone tcn -> causal transformer, 4 layers x 4 heads, ALiBi (no absolute positions)"
+tier: confirm
+seed: 0
+arch: xformer
+d_model: 128
+n_blocks: 4
+arch_kwargs:
+  n_heads: 4
+dropout: 0.1
+dow: false
+epochs: 12
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+notes: "third inductive bias for the blend; attention can pick out individual past days rather than averaging fixed windows"

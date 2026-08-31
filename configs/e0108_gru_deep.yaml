@@ -1,0 +1,17 @@
+# e0108 -- parent e0101, ONE change: GRU layers 2 -> 3.
+exp_id: e0108
+parent_id: e0101
+approach: nn_seq
+change: "GRU layers 2 -> 3, everything else identical to e0101"
+tier: confirm
+seed: 0
+arch: gru
+d_model: 128
+n_blocks: 3
+dropout: 0.1
+dow: false
+epochs: 12
+batch_users: 512
+lr: 0.003
+weight_decay: 0.0001
+notes: "depth lever, isolated from width (e0105) and training length (e0106)"

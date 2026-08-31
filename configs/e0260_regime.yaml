@@ -1,0 +1,101 @@
+# e0260-e0266 -- TRAINING-REGIME sweep. No feature changes: §1q closed the information axis by
+# direct measurement (nothing clears incremental R^2 0.0002 against the OOF residual, 22
+# candidates have failed, and a noise column beat the last three confirms). Every arm here runs
+# e0049's exact 665 columns and varies only how the model is fitted to them.
+#
+# Two arms are items the repo's own notes mark as never run:
+#   * multi-seed averaging on the GBDT side -- EXPERIMENTS.md §4 note 3, "nearly free"
+#   * recency weighting of training anchors -- BACKLOG Band B e0012/B3
+#
+# Scored with the real metric on the frozen folds, against a SAME-SESSION reference refitted in
+# every fold (cross-session drift is +0.00027..+0.00046 for zero-change configs, which exceeds
+# several of these effects).
+parent_id: e0049
+tier: confirm
+seed: 0
+fixed_rounds: 178
+
+feature_blocks: [base, counts, rank, visit, channel, dispersion, sbcnomoment]
+
+lgb_params:
+  objective: regression
+  metric: rmse
+  learning_rate: 0.05
+  num_leaves: 63
+  min_data_in_leaf: 200
+  feature_fraction: 0.8
+  bagging_fraction: 0.8
+  bagging_freq: 1
+  lambda_l2: 1.0
+  max_bin: 255
+  num_threads: 16
+  verbosity: -1
+
+arms:
+  # ---- multi-seed averaging: the one arm with a guaranteed sign. Averaging cannot raise
+  # variance, so this is a lower bound on what the family can do at zero risk. §4 note 3 says
+  # sigma_noise is 0.00009 here so the ceiling is small -- but the seq side got -0.00104 from
+  # the identical move, and nobody has ever measured it on the GBDT.
+  - exp_id: e0260
+    seeds: [0, 1, 2, 3, 4]
+    change: "5-seed averaging in LOG space, e0049 regime otherwise unchanged"
+    notes: "EXPERIMENTS.md §4 note 3 lists this as never run on the GBDT side. Averaged in log
+      space because the estimand is E[L|x]; averaging expm1'd values would estimate
+      log1p(E[y]) instead, the +0.5626 functional error of §1e."
+
+  # ---- anchor recency decay: BACKLOG e0012/B3. e0070-e0073 tested TRUNCATION and found the
+  # surface flat, but a step function on anchor age and a smooth decay are different
+  # interventions; the flatness of one does not imply the flatness of the other.
+  - exp_id: e0261
+    kind: anchor_decay
+    half_life_days: 60
+    change: "sample weight = 0.5^(anchor_age/60d) -- recency decay over training anchors"
+  - exp_id: e0262
+    kind: anchor_decay
+    half_life_days: 180
+    change: "sample weight = 0.5^(anchor_age/180d) -- gentler recency decay"
+    notes: "brackets e0261. Two half-lives spanning 3x; if neither moves, the decay surface is
+      flat like the truncation surface and BACKLOG B3 can be closed rather than left open."
+
+  # ---- buyer re-weighting. L2 on all rows implicitly weights classification vs magnitude by
+  # their row counts (44% of rows are structurally zero). §1q measures the task as 81%
+  # classification variance and §I13 measures magnitude as the weaker half. Unlike the e0010
+  # hurdle this keeps ONE model, so it cannot lose to composition error.
+  - exp_id: e0263
+    kind: buyer_weight
+    w_buy: 2.0
+    change: "sample weight 2.0 on buyers (y>0), 1.0 on non-buyers"
+  - exp_id: e0264
+    kind: buyer_weight
+    w_buy: 0.5
+    change: "sample weight 0.5 on buyers -- the opposite direction, brackets e0263"
+    notes: "a bracket, not a hypothesis: if up- and down-weighting both land inside noise the
+      implicit row-count weighting is already at the optimum and this lever is closed."
+
+  # ---- the two levers that did move something, combined. README.md: a combination is its
+  # own experiment; deltas do not add and this must be re-validated against its components.
+  - exp_id: e0265
+    kind: buyer_weight
+    w_buy: 2.0
+    seeds: [0, 1, 2, 3, 4]
+    change: "5-seed averaging + buyer weight 2.0 (e0260 x e0263 interaction)"
+
+  # ---- deeper capacity at the tuned learning rate, multi-seeded. e0090/e0093 tuned single
+  # models; whether the tuned optimum still holds once seeds are averaged is untested, and
+  # averaging usually shifts the optimum toward LOWER regularisation.
+  - exp_id: e0266
+    rounds: 1162
+    seeds: [0, 1, 2]
+    params:
+      learning_rate: 0.007652927717533519
+      num_leaves: 153
+      min_data_in_leaf: 1594
+      feature_fraction: 0.2856603391155135
+      bagging_fraction: 0.6454481262149945
+      lambda_l1: 0.035968501752339774
+      lambda_l2: 0.17660143263913397
+      max_bin: 511
+    change: "e0093 tuned params + 3-seed averaging (tuned optimum under seed averaging)"
+    notes: "e0093 alone scored 1.76453 (the project's best single tabular CV). If seed
+      averaging is worth anything it should be worth MORE here, since a lower learning rate
+      with 1162 rounds has more seed-to-seed path variance than 178 rounds at lr 0.05."
